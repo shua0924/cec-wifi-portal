@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEC WiFi Voucher Login</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+
+      <!-- Logo -->
+      <img src="images/ceclogo.png" alt="CEC Logo" class="logo">
+
+      <!-- Voucher Login Form -->
+      <form id="voucherForm">
+
+        <fieldset>
+          <legend>CEC WiFi</legend>
+
+          <!-- Voucher Code -->
+          <input type="text" 
+                 name="username" 
+                 placeholder="Enter Voucher Code" 
+                 required>
+
+          <!-- Privacy Policy Checkbox -->
+          <label class="checkbox">
+            <input type="checkbox" required>
+            I acknowledge that I have read and understood the 
+            data privacy policy of the college.
+          </label>
+
+          <!-- Acceptable Use Policy Checkbox -->
+          <label class="checkbox">
+            <input type="checkbox" required>
+            I acknowledge that I have read and understood the 
+            acceptable use policy of the college.
+          </label>
+
+          <button type="submit">Connect</button>
+
+        </fieldset>
+      </form>
+
+      <!-- Footer -->
+      <p class="footer">Made with ♥ by <span>CEC IT Team</span></p>
+
+    </div>
+  </div>
+
+<script>
+// Get URL parameters from Omada
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+document.getElementById("voucherForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var voucher = document.querySelector("input[name='username']").value;
+
+  var authUrl = getParam("auth_url");
+  var clientMac = getParam("client_mac");
+  var redirectUrl = getParam("redirect_url");
+
+  if (!authUrl) {
+    alert("Authentication server not found. Please reconnect to WiFi.");
+    return;
+  }
+
+  // Build login request back to Omada
+  var loginUrl = authUrl +
+    "?username=" + encodeURIComponent(voucher) +
+    "&password=" +
+    "&client_mac=" + encodeURIComponent(clientMac) +
+    "&redirect_url=" + encodeURIComponent(redirectUrl);
+
+  window.location.href = loginUrl;
+});
+</script>
+
+</body>
+</html>
